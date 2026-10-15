@@ -1,12 +1,12 @@
-numbers = [1, 2, 3]
-sum = 0
+x = 0
+while x < 5:
+    print(x)
+    x += 1
 
-for num in numbers:
-    sum = sum + num
 
-print(sum)
-
-# Range
-# range(start=0, stop, step=1)
-for i in range(5):
-    print(i)
+def exists(numbers, num):
+    i = 0
+    size = len(numbers)
+    while i < size and numbers[i] != num:
+        i += 1
+    return i < size
