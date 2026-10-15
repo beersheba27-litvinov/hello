@@ -10,3 +10,8 @@ def exists(numbers, num):
     while i < size and numbers[i] != num:
         i += 1
     return i < size
+
+
+numbers = [10, 20, 30]
+print(exists(numbers, 15))
+print(exists(numbers, 30))
