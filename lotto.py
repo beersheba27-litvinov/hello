@@ -19,7 +19,16 @@ def distinct_random_numbers(min, max, size):
     if creating "size" distinct random numbers is impossible, return empty array
     requirement: to use the above function "exists" and one while-loop
     """
-    # TODO
+    if max - min + 1 < size:
+        return []
+
+    numbers = []
+    while len(numbers) < size:
+        number = random.randint(min, max)
+        if not exists(numbers, number):
+            numbers.append(number)
+
+    return numbers
 
 
 print(distinct_random_numbers(1, 49, 7))
