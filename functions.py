@@ -22,7 +22,12 @@ def lastIndexOf(numbers, num):
     otherwise -1. Examples: lastIndexOf([10, 20, 30, 20, -1],20) => 3,
     lastIndexOf([10, 20, 30, 20, -1],23) => -1
     """
-    # TODO
+    reversed_index = indexOf(numbers[::-1], num)
+    return -1 if reversed_index == -1 else len(numbers) - reversed_index - 1
+
+
+print(lastIndexOf([10, 20, 30, 20, -1], 20))  # 3
+print(lastIndexOf([10, 20, 30, 20, -1], 23))  # -1
 
 
 def min_even(numbers):
