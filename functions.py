@@ -5,7 +5,14 @@ def indexOf(numbers, num):
     otherwise -1. Examples: indexOf([10, 20, 30, 20, -1],20) => 1,
     indexOf([10, 20, 30, 20, -1],23) => -1
     """
-    # TODO
+    i = 0
+    while i < len(numbers) and numbers[i] != num:
+        i += 1
+    return i if i < len(numbers) else -1
+
+
+print(indexOf([10, 20, 30, 20, -1], 20))  # 1
+print(indexOf([10, 20, 30, 20, -1], 23))  # -1
 
 
 def lastIndexOf(numbers, num):
