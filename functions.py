@@ -56,7 +56,11 @@ def count(numbers, num):
       Examples: count([10, 20, 30, 20, -1],20) => 2,
     count([10, 20, 30, 20, -1],23) => 0
     """
-    # TODO
+    return len([x for x in numbers if x == num])
+
+
+print(count([10, 20, 30, 20, -1], 20))  # 2
+print(count([10, 20, 30, 20, -1], 23))  # 0
 
 
 def sumOfTwoExists(numbers, sum):
