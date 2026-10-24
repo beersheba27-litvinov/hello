@@ -38,7 +38,15 @@ def min_even(numbers):
     no need to check that assumption (usually the assumptions are never checked )
     example: min_even (-10001, 10, 20, 8, -7) => 8
     """
-    # TODO
+    even_numbers = [num for num in numbers if num % 2 == 0]
+    result = even_numbers[0]
+    for num in even_numbers:
+        if num < result:
+            result = num
+    return result
+
+
+print(min_even([-10001, 10, 20, 8, -7]))  # 8
 
 
 def count(numbers, num):
