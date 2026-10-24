@@ -11,10 +11,6 @@ def indexOf(numbers, num):
     return i if i < len(numbers) else -1
 
 
-print(indexOf([10, 20, 30, 20, -1], 20))  # 1
-print(indexOf([10, 20, 30, 20, -1], 23))  # -1
-
-
 def lastIndexOf(numbers, num):
     """
     "numbers" - list with int numbers; "num" - int
@@ -24,10 +20,6 @@ def lastIndexOf(numbers, num):
     """
     reversed_index = indexOf(numbers[::-1], num)
     return -1 if reversed_index == -1 else len(numbers) - reversed_index - 1
-
-
-print(lastIndexOf([10, 20, 30, 20, -1], 20))  # 3
-print(lastIndexOf([10, 20, 30, 20, -1], 23))  # -1
 
 
 def min_even(numbers):
@@ -46,9 +38,6 @@ def min_even(numbers):
     return result
 
 
-print(min_even([-10001, 10, 20, 8, -7]))  # 8
-
-
 def count(numbers, num):
     """
     "numbers" - list with int numbers; "num" - int
@@ -57,10 +46,6 @@ def count(numbers, num):
     count([10, 20, 30, 20, -1],23) => 0
     """
     return len([x for x in numbers if x == num])
-
-
-print(count([10, 20, 30, 20, -1], 20))  # 2
-print(count([10, 20, 30, 20, -1], 23))  # 0
 
 
 def sumOfTwoExists(numbers, sum):
@@ -79,5 +64,16 @@ def sumOfTwoExists(numbers, sum):
     return i < last_index
 
 
-print(sumOfTwoExists([1, -1, 40, 50, 0], 0))  #  True
-print(sumOfTwoExists([1, -1, 40, 50, 0], 42))  #  False
+print("indexOf", indexOf([10, 20, 30, 20, -1], 20))  # 1
+print("indexOf", indexOf([10, 20, 30, 20, -1], 23))  # -1
+
+print("lastIndexOf", lastIndexOf([10, 20, 30, 20, -1], 20))  # 3
+print("lastIndexOf", lastIndexOf([10, 20, 30, 20, -1], 23))  # -1
+
+print("min_even", min_even([-10001, 10, 20, 8, -7]))  # 8
+
+print("count", count([10, 20, 30, 20, -1], 20))  # 2
+print("count", count([10, 20, 30, 20, -1], 23))  # 0
+
+print("sumOfTwoExists", sumOfTwoExists([1, -1, 40, 50, 0], 0))  #  True
+print("sumOfTwoExists", sumOfTwoExists([1, -1, 40, 50, 0], 42))  #  False
