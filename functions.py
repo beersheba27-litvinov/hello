@@ -72,7 +72,12 @@ def sumOfTwoExists(numbers, sum):
     Examples: sumOfTwoExists([1, -1, 40, 50, 0], 0) => True;
     sumOfTwoExists([1, -1, 40, 50, 0], 42) => False
     """
-    # TODO
+    last_index = len(numbers) - 1
+    i = 0
+    while i < last_index and not (sum - numbers[i] in numbers[i + 1 : len(numbers)]):
+        i += 1
+    return i < last_index
 
 
-# print calls for testing the above functions
+print(sumOfTwoExists([1, -1, 40, 50, 0], 0))  #  True
+print(sumOfTwoExists([1, -1, 40, 50, 0], 42))  #  False
