@@ -1,7 +1,10 @@
-l = list(range(1_000_000))
-l1 = [x for x in range(10)]
-l_even = [x**2 for x in range(10) if x % 2 == 0]
+a: int = 10
+b: float = 3.14
+c: str = "Hello"
+l: list[int] = [1, 2, 3]
+print(type(c))
 
-print(l)
-print(l1)
-print(l_even)
+
+def add(opt1: int, opt2: int) -> int:
+    result: int = opt1 + opt2
+    return result
