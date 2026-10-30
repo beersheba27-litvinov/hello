@@ -1,3 +1,6 @@
 import strings
 
-print(strings.string_concat("Hello", "World"))
+print(
+    f"Expected value is Hello World,\
+        actual value is {strings.string_concat('Hello', 'World')}"
+)
