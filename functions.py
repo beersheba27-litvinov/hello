@@ -1,79 +1,93 @@
-def indexOf(numbers, num):
+def intersection(l1: list[int], l2: list[int]) -> list[int]:
     """
-    "numbers" - list with int numbers; "num" - int
-    if "num" exists in "numbers", returns index of its first occurrence,
-    otherwise -1. Examples: indexOf([10, 20, 30, 20, -1],20) => 1,
-    indexOf([10, 20, 30, 20, -1],23) => -1
+    l1 - list containing non-repeated integer numbers
+    l2 = list containing non-repeated integer numbers
+    returns new list with integer numers existing in both input lists
+    Examples: intersection([1, 2, 3], [4, 3, 1])=> [1, 3]
+    intersection([1, 2, 3], [4, 5, 6])=> [];
     """
-    i = 0
-    while i < len(numbers) and numbers[i] != num:
-        i += 1
-    return i if i < len(numbers) else -1
+    return [num for num in l1 if (num in l2)]
 
 
-def lastIndexOf(numbers, num):
+def union(l1: list[int], l2: list[int]) -> list[int]:
     """
-    "numbers" - list with int numbers; "num" - int
-    if "num" exists in "numbers", returns index of its last occurrence,
-    otherwise -1. Examples: lastIndexOf([10, 20, 30, 20, -1],20) => 3,
-    lastIndexOf([10, 20, 30, 20, -1],23) => -1
+    l1 - list containing non-repeated integer numbers
+    l2 = list containing non-repeated integer numbers
+    returns new list with  integer numers existing  in ether list or both
+    Result list shouldn't contain repeated numbers
+    Examples: union([1, 2, 3], [4, 3, 1])=> [1, 2, 3, 4]
+    union([1, 2, 3], [4, 5, 6])=> [1, 2, 3, 4, 5, 6]
     """
-    reversed_index = indexOf(numbers[::-1], num)
-    return -1 if reversed_index == -1 else len(numbers) - reversed_index - 1
+    for num in l2:
+        if num not in l1:
+            l1.append(num)
+    return l1
 
 
-def min_even(numbers):
+def difference(l1: list[int], l2: list[int]) -> list[int]:
     """
-    "numbers" - list with int numbers
-    returns minimal even number
-    assumption: at least one even number exists in "numbers"
-    no need to check that assumption (usually the assumptions are never checked )
-    example: min_even (-10001, 10, 20, 8, -7) => 8
+    l1 - list containing non-repeated integer numbers
+    l2 = list containing non-repeated integer numbers
+    returns new list with  integer numers existing  in l1
+    but non-existing  l2
+    Examples: difference([1, 2, 3], [4, 3, 1])=> [2]
+    difference([1, 2, 3], [4, 5, 6])=> [1, 2, 3]
     """
-    even_numbers = [num for num in numbers if num % 2 == 0]
-    result = even_numbers[0]
-    for num in even_numbers:
-        if num < result:
-            result = num
+    return [num for num in l1 if (num not in l2)]
+
+
+def _difference_with_accum(l1: list[int], l2: list[int], accum: list[int]) -> list[int]:
+    """
+    l1 - list containing non-repeated integer numbers
+    l2 = list containing non-repeated integer numbers
+    accum = accumulator containing integer numbers
+    returns accumulator updated with integer numers existing in l1
+    but non-existing  l2
+    """
+    for num in l1:
+        if num not in l2:
+            accum.append(num)
+    return accum
+
+
+def symmetric_difference(l1: list[int], l2: list[int]) -> list[int]:
+    """
+    l1 - list containing non-repeated integer numbers
+    l2 = list containing non-repeated integer numbers
+    returns new list with  integer numers existing  in either list but not in both
+    Examples: symmetric_difference([1, 2, 3], [4, 3, 1])=> [2, 4]
+    symmetric_difference([1, 2, 3], [4, 5, 6])=> [1, 2, 3, 4, 5, 6]
+    """
+    result: list[int] = _difference_with_accum(l1, l2, [])
+    result = _difference_with_accum(l2, l1, result)
     return result
 
 
-def count(numbers, num):
+def remove_positive_greater_or_negative_less(
+    numbers: list[int], positive_lim: int, negative_lim: int
+) -> list[int]:
     """
-    "numbers" - list with int numbers; "num" - int
-    returns count of "num" occurrences in "numbers".
-      Examples: count([10, 20, 30, 20, -1],20) => 2,
-    count([10, 20, 30, 20, -1],23) => 0
+    numbers - list with integer numbers
+    returns new list containing all numbers from the input list
+    except the positive ones greater than 'positive_lim' and the negative ones
+    less than 'negative_lim'
+    Example: remove_positive_greater_or_negative_less([1, 2, 11, -3, 10, 15], 10, -3)
+    => [1, 2, -3, 10]
     """
-    return len([x for x in numbers if x == num])
+    return [num for num in numbers if (negative_lim <= num <= positive_lim)]
 
 
-def sumOfTwoExists(numbers, sum):
+def max_with_negative_duplicate(numbers: list[int]) -> int:
     """
-    Optional task for advanced students
-    To apply only the types discussed at the course up to now
-    "numbers" - list with int numbers; "sum" - int
-    returns True if "numbers" includes two numbers, sum of which equals "sum"
-    Examples: sumOfTwoExists([1, -1, 40, 50, 0], 0) => True;
-    sumOfTwoExists([1, -1, 40, 50, 0], 42) => False
+    numbers - list with integer numbers
+    returns the maximal element of "numbers" with existing negative duplicate
+    (example of a number with negative duplicate: number 100, negative duplicate -100)
+    If no such number exists, returns -1
+    Examples: max_with_negative_duplicate([-100, 20, 10, -10, 1, 1, 5, -30, -20, 100]) => 100
+    max_with_negative_duplicate([10, 20, -15, -11, 20]) => -1
     """
-    last_index = len(numbers) - 1
-    i = 0
-    while i < last_index and not (sum - numbers[i] in numbers[i + 1 : len(numbers)]):
-        i += 1
-    return i < last_index
-
-
-print("indexOf", indexOf([10, 20, 30, 20, -1], 20))  # 1
-print("indexOf", indexOf([10, 20, 30, 20, -1], 23))  # -1
-
-print("lastIndexOf", lastIndexOf([10, 20, 30, 20, -1], 20))  # 3
-print("lastIndexOf", lastIndexOf([10, 20, 30, 20, -1], 23))  # -1
-
-print("min_even", min_even([-10001, 10, 20, 8, -7]))  # 8
-
-print("count", count([10, 20, 30, 20, -1], 20))  # 2
-print("count", count([10, 20, 30, 20, -1], 23))  # 0
-
-print("sumOfTwoExists", sumOfTwoExists([1, -1, 40, 50, 0], 0))  #  True
-print("sumOfTwoExists", sumOfTwoExists([1, -1, 40, 50, 0], 42))  #  False
+    result: int = -1
+    for num in numbers:
+        if num > result and (-num in numbers):
+            result = num
+    return result
