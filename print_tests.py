@@ -29,7 +29,7 @@ print(
 )
 
 print(
-    f"remove_positive_greater_or_negative_less([1, 2, 11, -3, 10, 15], 10, -3), expected: [2, 4], actual: {functions.remove_positive_greater_or_negative_less([1, 2, 11, -3, 10, 15], 10, -3)}"
+    f"remove_positive_greater_or_negative_less([1, 2, 11, -3, 10, 15], 10, -3), expected: [1, 2, -3, 10], actual: {functions.remove_positive_greater_or_negative_less([1, 2, 11, -3, 10, 15], 10, -3)}"
 )
 
 print(
