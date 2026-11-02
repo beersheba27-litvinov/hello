@@ -6,7 +6,7 @@ def intersection(l1: list[int], l2: list[int]) -> list[int]:
     Examples: intersection([1, 2, 3], [4, 3, 1])=> [1, 3]
     intersection([1, 2, 3], [4, 5, 6])=> [];
     """
-    return [num for num in l1 if (num in l2)]
+    return [num for num in l1 if num in l2]
 
 
 def union(l1: list[int], l2: list[int]) -> list[int]:
@@ -33,7 +33,7 @@ def difference(l1: list[int], l2: list[int]) -> list[int]:
     Examples: difference([1, 2, 3], [4, 3, 1])=> [2]
     difference([1, 2, 3], [4, 5, 6])=> [1, 2, 3]
     """
-    return [num for num in l1 if (num not in l2)]
+    return [num for num in l1 if num not in l2]
 
 
 def _difference_with_accum(l1: list[int], l2: list[int], accum: list[int]) -> list[int]:
@@ -74,7 +74,7 @@ def remove_positive_greater_or_negative_less(
     Example: remove_positive_greater_or_negative_less([1, 2, 11, -3, 10, 15], 10, -3)
     => [1, 2, -3, 10]
     """
-    return [num for num in numbers if (negative_lim <= num <= positive_lim)]
+    return [num for num in numbers if negative_lim <= num <= positive_lim]
 
 
 def max_with_negative_duplicate(numbers: list[int]) -> int:
@@ -88,6 +88,6 @@ def max_with_negative_duplicate(numbers: list[int]) -> int:
     """
     result: int = -1
     for num in numbers:
-        if num > result and (-num in numbers):
+        if num > result and -num in numbers:
             result = num
     return result
