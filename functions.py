@@ -18,10 +18,11 @@ def union(l1: list[int], l2: list[int]) -> list[int]:
     Examples: union([1, 2, 3], [4, 3, 1])=> [1, 2, 3, 4]
     union([1, 2, 3], [4, 5, 6])=> [1, 2, 3, 4, 5, 6]
     """
+    result = l1[:]
     for num in l2:
         if num not in l1:
-            l1.append(num)
-    return l1
+            result.append(num)
+    return result
 
 
 def difference(l1: list[int], l2: list[int]) -> list[int]:
@@ -90,4 +91,26 @@ def max_with_negative_duplicate(numbers: list[int]) -> int:
     for num in numbers:
         if num > result and -num in numbers:
             result = num
+    return result
+
+
+def max_with_negative_duplicate_alt(numbers: list[int]) -> int:
+    """
+    numbers - list with integer numbers
+    returns the maximal element of "numbers" with existing negative duplicate
+    (example of a number with negative duplicate: number 100, negative duplicate -100)
+    If no such number exists, returns -1
+    Examples: max_with_negative_duplicate([-100, 20, 10, -10, 1, 1, 5, -30, -20, 100]) => 100
+    max_with_negative_duplicate([10, 20, -15, -11, 20]) => -1
+    """
+    result: int = -1
+    length = len(numbers)
+    for index_comparing in range(length - 1):
+        comparing: int = numbers[index_comparing]
+        index_compared = index_comparing + 1
+        while (comparing > result or -comparing > result) and index_compared < length:
+            if comparing == -numbers[index_compared]:
+                result = comparing if comparing > 0 else -comparing
+            else:
+                index_compared += 1
     return result

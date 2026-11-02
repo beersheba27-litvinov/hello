@@ -38,3 +38,10 @@ print(
 print(
     f"max_with_negative_duplicate(([10, 20, -15, -11, 20]), expected: -1, actual: {functions.max_with_negative_duplicate([10, 20, -15, -11, 20])}"
 )
+
+print(
+    f"max_with_negative_duplicate_alt([-100, 20, 10, -10, 1, 1, 5, -30, -20, 100]), expected: 100, actual: {functions.max_with_negative_duplicate_alt([-100, 20, 10, -10, 1, 1, 5, -30, -20, 100])}"
+)
+print(
+    f"max_with_negative_duplicate_alt(([10, 20, -15, -11, 20]), expected: -1, actual: {functions.max_with_negative_duplicate_alt([10, 20, -15, -11, 20])}"
+)
