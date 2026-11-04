@@ -1,116 +1,34 @@
-def intersection(l1: list[int], l2: list[int]) -> list[int]:
+def min_max_average(numbers: list[int]) -> tuple[int, int, float]:
     """
-    l1 - list containing non-repeated integer numbers
-    l2 = list containing non-repeated integer numbers
-    returns new list with integer numers existing in both input lists
-    Examples: intersection([1, 2, 3], [4, 3, 1])=> [1, 3]
-    intersection([1, 2, 3], [4, 5, 6])=> [];
+    "numbers" - list with int numbers
+    returns tuple of minimal number, maximal number and average (float)
+    assumption: "numbers" is not empty
     """
-    return [num for num in l1 if num in l2]
 
-
-def union(l1: list[int], l2: list[int]) -> list[int]:
-    """
-    l1 - list containing non-repeated integer numbers
-    l2 = list containing non-repeated integer numbers
-    returns new list with  integer numers existing  in ether list or both
-    Result list shouldn't contain repeated numbers
-    Examples: union([1, 2, 3], [4, 3, 1])=> [1, 2, 3, 4]
-    union([1, 2, 3], [4, 5, 6])=> [1, 2, 3, 4, 5, 6]
-    """
-    result = l1[:]
-    for num in l2:
-        if num not in l1:
-            result.append(num)
-    return result
-
-
-def difference(l1: list[int], l2: list[int]) -> list[int]:
-    """
-    l1 - list containing non-repeated integer numbers
-    l2 = list containing non-repeated integer numbers
-    returns new list with  integer numers existing  in l1
-    but non-existing  l2
-    Examples: difference([1, 2, 3], [4, 3, 1])=> [2]
-    difference([1, 2, 3], [4, 5, 6])=> [1, 2, 3]
-    """
-    return [num for num in l1 if num not in l2]
-
-
-def _difference_with_accum(l1: list[int], l2: list[int], accum: list[int]) -> list[int]:
-    """
-    l1 - list containing non-repeated integer numbers
-    l2 = list containing non-repeated integer numbers
-    accum = accumulator containing integer numbers
-    returns accumulator updated with integer numers existing in l1
-    but non-existing  l2
-    """
-    for num in l1:
-        if num not in l2:
-            accum.append(num)
-    return accum
-
-
-def symmetric_difference(l1: list[int], l2: list[int]) -> list[int]:
-    """
-    l1 - list containing non-repeated integer numbers
-    l2 = list containing non-repeated integer numbers
-    returns new list with  integer numers existing  in either list but not in both
-    Examples: symmetric_difference([1, 2, 3], [4, 3, 1])=> [2, 4]
-    symmetric_difference([1, 2, 3], [4, 5, 6])=> [1, 2, 3, 4, 5, 6]
-    """
-    result: list[int] = _difference_with_accum(l1, l2, [])
-    result = _difference_with_accum(l2, l1, result)
-    return result
-
-
-def remove_positive_greater_or_negative_less(
-    numbers: list[int], positive_lim: int, negative_lim: int
-) -> list[int]:
-    """
-    numbers - list with integer numbers
-    returns new list containing all numbers from the input list
-    except the positive ones greater than 'positive_lim' and the negative ones
-    less than 'negative_lim'
-    Example: remove_positive_greater_or_negative_less([1, 2, 11, -3, 10, 15], 10, -3)
-    => [1, 2, -3, 10]
-    """
-    return [num for num in numbers if negative_lim <= num <= positive_lim]
-
-
-def max_with_negative_duplicate(numbers: list[int]) -> int:
-    """
-    numbers - list with integer numbers
-    returns the maximal element of "numbers" with existing negative duplicate
-    (example of a number with negative duplicate: number 100, negative duplicate -100)
-    If no such number exists, returns -1
-    Examples: max_with_negative_duplicate([-100, 20, 10, -10, 1, 1, 5, -30, -20, 100]) => 100
-    max_with_negative_duplicate([10, 20, -15, -11, 20]) => -1
-    """
-    result: int = -1
+    min_num = numbers[0]
+    max_num = min_num
+    total = 0
     for num in numbers:
-        if num > result and -num in numbers:
-            result = num
-    return result
+        total += num
+        if num > max_num:
+            max_num = num
+        elif num < min_num:
+            min_num = num
+    return min_num, max_num, total / len(numbers)
 
 
-def max_with_negative_duplicate_alt(numbers: list[int]) -> int:
+def move_max_to_end(numbers: list[int]):
     """
-    numbers - list with integer numbers
-    returns the maximal element of "numbers" with existing negative duplicate
-    (example of a number with negative duplicate: number 100, negative duplicate -100)
-    If no such number exists, returns -1
-    Examples: max_with_negative_duplicate([-100, 20, 10, -10, 1, 1, 5, -30, -20, 100]) => 100
-    max_with_negative_duplicate([10, 20, -15, -11, 20]) => -1
+    "numbers" - list with int numbers
+    moves the maximal number (that may occur in "numbers" several times) to the end of "numbers"
+    returns nothing
     """
-    result: int = -1
-    length = len(numbers)
-    for index_comparing in range(length - 1):
-        comparing: int = numbers[index_comparing]
-        index_compared = index_comparing + 1
-        while (comparing > result or -comparing > result) and index_compared < length:
-            if comparing == -numbers[index_compared]:
-                result = comparing if comparing > 0 else -comparing
-            else:
-                index_compared += 1
-    return result
+    max_index = 0
+    for i, num in enumerate(numbers):
+        if num > numbers[max_index]:
+            max_index = i
+    max_num = numbers[max_index]
+
+    for i in range(max_index, len(numbers) - 1):
+        numbers[i] = numbers[i + 1]
+    numbers[len(numbers) - 1] = max_num
