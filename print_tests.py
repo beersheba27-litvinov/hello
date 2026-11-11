@@ -33,6 +33,11 @@ print(
     f"list is {numbers}, index of 50 is expected - -10, actual -\
  {functions.binary_search(numbers, 50)}"
 )
+# Additional test
+print(
+    f"list is {numbers}, index of 30 is expected - 6, actual -\
+ {functions.binary_search(numbers, 30)}"
+)
 
 print(
     f"initial array is {numbers}, after iserting 7 the expected list is\
