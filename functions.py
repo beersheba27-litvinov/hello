@@ -31,3 +31,7 @@ def insert_sorted(numbers: list[int], num: int) -> None:
     after insert_sorted (numbers, 20) (initial list) the list will contain [10, 10, 10, 20, 20, 20, 20, 30, 30, 40]
 
     """
+    index = binary_search(numbers, num)
+    if index < 0:
+        index = -(index + 1)
+    numbers[index:index] = [num]
