@@ -1,26 +1,52 @@
 import functions
 
+numbers: list[int] = [10, 10, 10, 20, 20, 20, 30, 30, 40]
+numbers_ins7 = numbers.copy()
+numbers_ins19 = numbers.copy()
+numbers_ins20 = numbers.copy()
+numbers_ins45 = numbers.copy()
+functions.insert_sorted(numbers_ins7, 7)
+functions.insert_sorted(numbers_ins19, 19)
+functions.insert_sorted(numbers_ins20, 20)
+functions.insert_sorted(numbers_ins45, 45)
 print(
-    f"max_with_negative_duplicate([-100, 20, 10, -10, 1, 1, 5, -30, -20, 100]), expected: 100, actual: {functions.max_with_negative_duplicate([-100, 20, 10, -10, 1, 1, 5, -30, -20, 100])}"
+    f"list is {numbers}, index of 10 is expected - 0, actual -\
+ {functions.binary_search(numbers, 10)}"
 )
 print(
-    f"max_with_negative_duplicate([10, 20, -15, -11, 20]), expected: -1, actual: {functions.max_with_negative_duplicate([10, 20, -15, -11, 20])}"
+    f"list is {numbers}, index of 20 is expected - 3, actual -\
+ {functions.binary_search(numbers, 20)}"
+)
+print(
+    f"list is {numbers}, index of 40 is expected - 8, actual -\
+ {functions.binary_search(numbers, 40)}"
+)
+print(
+    f"list is {numbers}, index of 5 is expected - -1, actual -\
+ {functions.binary_search(numbers, 5)}"
+)
+print(
+    f"list is {numbers}, index of 15 is expected - -4, actual -\
+ {functions.binary_search(numbers, 15)}"
+)
+print(
+    f"list is {numbers}, index of 50 is expected - -10, actual -\
+ {functions.binary_search(numbers, 50)}"
 )
 
 print(
-    f"sumOfTwoExists([1, -1, 40, 50, 0], 0), expected: True, actual: {functions.sumOfTwoExists([1, -1, 40, 50, 0], 0)}"
+    f"initial array is {numbers}, after iserting 7 the expected list is\
+[7, 10, 10, 10, 20, 20, 20, 30, 30, 40],the actual is {numbers_ins7}"
 )
 print(
-    f"sumOfTwoExists([1, -1, 40, 50, 0], 42), expected: False, actual: {functions.sumOfTwoExists([1, -1, 40, 50, 0], 42)}"
+    f"initial array is {numbers}, after iserting 19 the expected list is\
+[ 10, 10, 10, 19, 20, 20, 20, 30, 30, 40],the actual is {numbers_ins19}"
 )
 print(
-    f"sumOfTwoExists([1, 10, 20], 2), expected: False, actual: {functions.sumOfTwoExists([1, 10, 20], 2)}"
+    f"initial array is {numbers}, after iserting 20 the expected list is\
+[10, 10, 10, 20, 20, 20, 20, 30, 30, 40],the actual is {numbers_ins20}"
 )
-
-numbers = [100, 90, 80, 70]
-functions.bubble_sort(numbers)
-print(f"bubble_sort([100, 90, 80, 70]), expected: [70, 80, 90, 100], actual: {numbers}")
-
 print(
-    f"remove_duplicates([-1, 0, 100, -1, 20, 80, 20]), expected: [-1, 0, 100,  20, 80], actual: {functions.remove_duplicates([-1, 0, 100, -1, 20, 80, 20])}"
+    f"initial array is {numbers}, after iserting 7 the expected list is\
+[10, 10, 10, 20, 20, 20, 30, 30, 40, 45],the actual is {numbers_ins45}"
 )
