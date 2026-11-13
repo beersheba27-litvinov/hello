@@ -1,37 +1,60 @@
-def binary_search(numbers: list[int], num: int) -> int:
-    """
-    O[logN]
-    numbers: sorted list
-    num: being searched number
-    returns an inedex of the first occurrence at which "num" resides in "numbers" or
-    negative number as -(index_sort + 1) where index_sort is the index where "num" should have been in "numbers"
-    for example: numbers: list[int] = [10, 10, 10, 20, 20, 20, 30, 30, 40]
-    binary_search(numbers, 20) -> 3 (not 4),binary_search(numbers, 15) -> -4 (not -1),
-    binary_search(numbers, 45) -> -10
-    """
-    left: int = 0
-    right: int = len(numbers) - 1
-    middle: int = (left + right) // 2
-    while left <= right and numbers[left] < num:
-        if num <= numbers[middle]:
-            right = middle
-        else:
-            left = middle + 1
-        middle = (left + right) // 2
-    return left if left <= right and numbers[left] == num else -(left + 1)
+from collections.abc import Callable, Sequence
 
 
-def insert_sorted(numbers: list[int], num: int) -> None:
-    """
-    numbers: sorted list
-    num: inserted number
-    inserts "num" keeping "numbers" sorted
-    For example: numbers: list[int] = [10, 10, 10, 20, 20, 20, 30, 30, 40]
-    after insert_sorted (numbers, 19) the list will contain [10, 10, 10, 19, 20, 20, 20, 30, 30, 40]
-    after insert_sorted (numbers, 20) (initial list) the list will contain [10, 10, 10, 20, 20, 20, 20, 30, 30, 40]
+def _move_max_to_end(
+    items: list[object], length: int, key: Callable[[object], object] | None = None
+) -> int:
+    n_swaps: int = 0
+    for i in range(length):
+        item_current = items[i] if not key else key(items[i])
+        item_next = items[i + 1] if not key else key(items[i + 1])
+        if item_current > item_next:  # pyright: ignore[reportOperatorIssue]
+            n_swaps += 1
+            items[i], items[i + 1] = items[i + 1], items[i]
+    return n_swaps
 
+
+def bubble_sorted(
+    items: Sequence[object], key: Callable[[object], object] | None = None
+) -> list[object]:
     """
-    index = binary_search(numbers, num)
-    if index < 0:
-        index = -(index + 1)
-    numbers[index:index] = [num]
+    Sequence[object] means immutable list, so items cannot be updated
+    returns new list of objects sorted using algorithm "bubble sort"
+      in accorgance with key function-converter like standard Python sorting
+    items - sequence of any objects
+    key - a function taking one object and returning converted object having standard operator ">"
+          default value None designating standard Python sorting with no converting initial object
+    For example, bubble_sort(numbers) - regular sort of numbers
+                 bubble_sort(numbers, abs) - sort of numbers in accordance with their abs values
+    Unlike the standard sorting methods of Python, the function may be called with no explicit specifying key=
+    """
+    sorted_items: list[object] = list(items)
+    unsorted: bool = True
+    size: int = len(sorted_items)
+    while unsorted:
+        size -= 1
+        unsorted = bool(_move_max_to_end(sorted_items, size, key))
+    return sorted_items
+
+
+def even_asc_odd_desc(numbers: list[int]) -> list[int]:
+    """
+    returns new list of numbers sorted in the following order:
+    The even numbers ordered by ascending order reside before odd numbers ordered by descending order
+    For example, even_asc_odd_desc([-3, -10, 12, 3, -21, 6, 21, 5, 4 ]) returns [-10, 4, 6, 12, 21, 5, 3, -3, -21]
+    """
+
+
+def merge(
+    part1: Sequence[object],
+    part2: Sequence[object],
+    key: Callable[[object], object] | None = None,
+) -> list[object]:
+    """
+    part1 and part2 -  sorted in accordance with key function-converter lists of any objects
+    key - a function taking one object and returning converted object having standard operator ">"
+              default value None designating standard Python sorting with no converting initial objects
+    returns new list, sorted in accordance with key function-converter, comprising of two lists-parts
+    For example, merge([-11, 3, 5, 7], [-20, -10, 0, 4])  => [-20, -11, -10, 0, 3, 4, 5, 7]
+    merge([3, 5, 7, -11 ], [ 0, 4, -10, -20 ], abs)  => [ 0, 3, 4, 5, 7, -10, -11,-20]
+    """

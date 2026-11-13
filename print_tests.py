@@ -1,57 +1,46 @@
 import functions
+import unittest_print
 
-numbers: list[int] = [10, 10, 10, 20, 20, 20, 30, 30, 40]
-numbers_ins7 = numbers.copy()
-numbers_ins19 = numbers.copy()
-numbers_ins20 = numbers.copy()
-numbers_ins45 = numbers.copy()
-functions.insert_sorted(numbers_ins7, 7)
-functions.insert_sorted(numbers_ins19, 19)
-functions.insert_sorted(numbers_ins20, 20)
-functions.insert_sorted(numbers_ins45, 45)
-print(
-    f"list is {numbers}, index of 10 is expected - 0, actual -\
- {functions.binary_search(numbers, 10)}"
+numbers = [-2, -10, 12, 3, -22, 6, 21, 5, 4]
+sorted_numbers = [-22, -10, -2, 3, 4, 5, 6, 12, 21]
+sorted_numbers_abs = [-2, 3, 4, 5, 6, -10, 12, 21, -22]
+sorted_even_odd = [-22, -10, -2, 4, 6, 12, 21, 5, 3]
+strings = ["lmn", "aaaaaaa", "w", "bb", "B", "cc"]
+sorted_len_str = ["B", "w", "bb", "cc", "lmn", "aaaaaaa"]
+sorted_strings = ["B", "aaaaaaa", "bb", "cc", "lmn", "w"]
+part1 = [3, 5, 7, -11]
+part2 = [0, 4, -10, -20]
+merge_expected = [0, 3, 4, 5, 7, -10, -11, -20]
+unittest_print.print_test(
+    f"Sort of list {numbers}", sorted_numbers, functions.bubble_sorted(numbers)
 )
-print(
-    f"list is {numbers}, index of 20 is expected - 3, actual -\
- {functions.binary_search(numbers, 20)}"
-)
-print(
-    f"list is {numbers}, index of 40 is expected - 8, actual -\
- {functions.binary_search(numbers, 40)}"
-)
-print(
-    f"list is {numbers}, index of 5 is expected - -1, actual -\
- {functions.binary_search(numbers, 5)}"
-)
-print(
-    f"list is {numbers}, index of 15 is expected - -4, actual -\
- {functions.binary_search(numbers, 15)}"
-)
-print(
-    f"list is {numbers}, index of 50 is expected - -10, actual -\
- {functions.binary_search(numbers, 50)}"
-)
-# Additional test
-print(
-    f"list is {numbers}, index of 30 is expected - 6, actual -\
- {functions.binary_search(numbers, 30)}"
+unittest_print.print_test(
+    f"Sort of list {numbers} according to abs values",
+    sorted_numbers_abs,
+    functions.bubble_sorted(numbers, abs),  # pyright: ignore[reportArgumentType]
 )
 
-print(
-    f"initial array is {numbers}, after iserting 7 the expected list is\
-[7, 10, 10, 10, 20, 20, 20, 30, 30, 40],the actual is {numbers_ins7}"
+unittest_print.print_test(
+    f"Sort of list {strings} ",
+    sorted_len_str,
+    functions.bubble_sorted(strings, lambda s: (len(str(s)), s)),
 )
-print(
-    f"initial array is {numbers}, after iserting 19 the expected list is\
-[ 10, 10, 10, 19, 20, 20, 20, 30, 30, 40],the actual is {numbers_ins19}"
+
+unittest_print.print_test(
+    "Inital sequence is untouched after bubble sorting",
+    [-2, -10, 12, 3, -22, 6, 21, 5, 4],
+    numbers,
 )
-print(
-    f"initial array is {numbers}, after iserting 20 the expected list is\
-[10, 10, 10, 20, 20, 20, 20, 30, 30, 40],the actual is {numbers_ins20}"
+
+unittest_print.print_test(
+    f"Sort of list {numbers} according to even first in Asc, odd after even in Desc",
+    sorted_even_odd,
+    functions.even_asc_odd_desc(numbers),
 )
-print(
-    f"initial array is {numbers}, after iserting 7 the expected list is\
-[10, 10, 10, 20, 20, 20, 30, 30, 40, 45],the actual is {numbers_ins45}"
+
+unittest_print.print_test(
+    f"merge of two parts {part1} and {part2} according to abs values",
+    merge_expected,
+    functions.merge(part1, part2, abs),  # pyright: ignore[reportArgumentType]
 )
+unittest_print.print_results()
