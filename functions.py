@@ -6,8 +6,8 @@ def _move_max_to_end(
 ) -> int:
     n_swaps: int = 0
     for i in range(length):
-        item_current = items[i] if not key else key(items[i])
-        item_next = items[i + 1] if not key else key(items[i + 1])
+        item_current = items[i] if key is None else key(items[i])
+        item_next = items[i + 1] if key is None else key(items[i + 1])
         if item_current > item_next:  # pyright: ignore[reportOperatorIssue]
             n_swaps += 1
             items[i], items[i + 1] = items[i + 1], items[i]
@@ -50,6 +50,30 @@ def even_asc_odd_desc(numbers: list[int]) -> list[int]:
     )
 
 
+def _binary_search(
+    items: list[object], item: object, key: Callable[[object], object] | None = None
+) -> int:
+    left: int = 0
+    right: int = len(items) - 1
+    middle: int = (left + right) // 2
+    item_comparable = item if key is None else key(item)
+
+    while left <= right:
+        items_middle = items[middle] if key is None else key(items[middle])
+
+        if item_comparable > items_middle:  # pyright: ignore[reportOperatorIssue]
+            left = middle + 1
+        else:
+            right = middle - 1
+        middle = (left + right) // 2
+
+    condition = (
+        left < len(items)
+        and (items[left] if key is None else key(items[left])) == item_comparable
+    )
+    return left if condition else -(left + 1)
+
+
 def merge(
     part1: Sequence[object],
     part2: Sequence[object],
@@ -63,3 +87,15 @@ def merge(
     For example, merge([-11, 3, 5, 7], [-20, -10, 0, 4])  => [-20, -11, -10, 0, 3, 4, 5, 7]
     merge([3, 5, 7, -11 ], [ 0, 4, -10, -20 ], abs)  => [ 0, 3, 4, 5, 7, -10, -11,-20]
     """
+    acceptor_list, donor_list = (
+        (list(part1), list(part2))
+        if len(part1) >= len(part2)
+        else (list(part2), list(part1))
+    )
+
+    for obj in donor_list:
+        index = _binary_search(acceptor_list, obj, key)
+        index = index if index >= 0 else -(index + 1)
+        acceptor_list[index:index] = [obj]
+
+    return acceptor_list
