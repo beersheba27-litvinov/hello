@@ -27,15 +27,15 @@ unittest_print.print_test(
 )
 
 unittest_print.print_test(
-    "Inital sequence is untouched after bubble sorting",
-    [-2, -10, 12, 3, -22, 6, 21, 5, 4],
-    numbers,
-)
-
-unittest_print.print_test(
     f"Sort of list {numbers} according to even first in Asc, odd after even in Desc",
     sorted_even_odd,
     functions.even_asc_odd_desc(numbers),
+)
+
+unittest_print.print_test(
+    "Inital sequence is untouched",
+    [-2, -10, 12, 3, -22, 6, 21, 5, 4],
+    numbers,
 )
 
 unittest_print.print_test(

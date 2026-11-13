@@ -44,6 +44,11 @@ def even_asc_odd_desc(numbers: list[int]) -> list[int]:
     For example, even_asc_odd_desc([-3, -10, 12, 3, -21, 6, 21, 5, 4 ]) returns [-10, 4, 6, 12, 21, 5, 3, -3, -21]
     """
 
+    return bubble_sorted(
+        numbers,
+        lambda num: (0, num) if num % 2 == 0 else (1, -num),  # pyright: ignore[reportReturnType, reportUnknownLambdaType, reportOperatorIssue]
+    )
+
 
 def merge(
     part1: Sequence[object],
