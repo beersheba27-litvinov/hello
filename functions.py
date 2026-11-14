@@ -50,30 +50,6 @@ def even_asc_odd_desc(numbers: list[int]) -> list[int]:
     )
 
 
-def _binary_search(
-    items: list[object], item: object, key: Callable[[object], object] | None = None
-) -> int:
-    left: int = 0
-    right: int = len(items) - 1
-    middle: int = (left + right) // 2
-    item_comparable = item if key is None else key(item)
-
-    while left <= right:
-        items_middle = items[middle] if key is None else key(items[middle])
-
-        if item_comparable > items_middle:  # pyright: ignore[reportOperatorIssue]
-            left = middle + 1
-        else:
-            right = middle - 1
-        middle = (left + right) // 2
-
-    condition = (
-        left < len(items)
-        and (items[left] if key is None else key(items[left])) == item_comparable
-    )
-    return left if condition else -(left + 1)
-
-
 def merge(
     part1: Sequence[object],
     part2: Sequence[object],
@@ -87,15 +63,27 @@ def merge(
     For example, merge([-11, 3, 5, 7], [-20, -10, 0, 4])  => [-20, -11, -10, 0, 3, 4, 5, 7]
     merge([3, 5, 7, -11 ], [ 0, 4, -10, -20 ], abs)  => [ 0, 3, 4, 5, 7, -10, -11,-20]
     """
-    acceptor_list, donor_list = (
-        (list(part1), list(part2))
-        if len(part1) >= len(part2)
-        else (list(part2), list(part1))
-    )
+    result: list[object] = []
+    len1 = len(part1)
+    len2 = len(part2)
+    index1 = 0
+    index2 = 0
+    while index1 < len1 or index2 < len2:
+        if index1 == len1:
+            result.append(part2[index2])
+            index2 += 1
+        elif index2 == len2:
+            result.append(part1[index1])  # pyright: ignore[reportOperatorIssue]
+            index1 += 1
+        elif (
+            key(part1[index1]) <= key(part2[index2])  # pyright: ignore[reportOperatorIssue]
+            if key is not None
+            else part1[index1] <= part2[index2]  # pyright: ignore[reportOperatorIssue]
+        ):
+            result.append(part1[index1])
+            index1 += 1
+        else:
+            result.append(part2[index2])
+            index2 += 1
 
-    for obj in donor_list:
-        index = _binary_search(acceptor_list, obj, key)
-        index = index if index >= 0 else -(index + 1)
-        acceptor_list[index:index] = [obj]
-
-    return acceptor_list
+    return result
