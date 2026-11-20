@@ -1,26 +1,30 @@
-from functions import merge_in_place
+from functions import get_all_not_in_range, get_all_range
 from unittest_print import print_results, print_test
 
-numbers_abs = [3, 5, 7, -11, 0, 4, -10, -20, 100, -80, -4, 8]
-numbers = [-11, 3, 5, 7, -20, -10, 0, 4, 100, -80, -4, 8]
-numbers_act = numbers.copy()
+numbers = [1, 3, 5, 7, 9, 11]
 
-numbers_abs_exp = [0, 3, 4, 5, 7, -10, -11, -20, 100, -80, -4, 8]
-numbers_exp = [-20, -11, -10, 0, 3, 4, 5, 7, 100, -80, -4, 8]
-numbers_abs_act = numbers_abs.copy()
-merge_in_place(numbers_act, start=0, len1=4, size=8)
-merge_in_place(numbers_abs_act, start=0, len1=4, size=8, key=abs)
+get_all_range_tests: list[tuple[range | None, list[int]]] = [
+    (range(3, 7), [3, 5]),
+    (range(4, 8), [5, 7]),
+    (range(-1, 20), [1, 3, 5, 7, 9, 11]),
+    (range(1, 2), [1]),
+    (range(11, 12), [11]),
+    (range(-5, -1), []),
+    (range(20, 30), []),
+    (range(4, 5), []),
+    (range(5, 5), []),
+    (range(10, 5), []),
+    (range(7, 3, -1), [5, 7]),
+    (None, [1, 3, 5, 7, 9, 11]),
+]
 
-print_test(
-    f"merge subparts of the first 8 numbers in the list {numbers} ",
-    numbers_exp,
-    numbers_act,
-)
-print_test(
-    f"merge subparts of the first 8 numbers in the list {numbers_abs} according to the abs values ",
-    numbers_abs_exp,
-    numbers_abs_act,
-)
+
+for allowed, expected in get_all_range_tests:
+    print_test(
+        f"get_all_range: {allowed} from {numbers}",
+        expected,
+        get_all_range(numbers, allowed),
+    )
 
 
 print_results()

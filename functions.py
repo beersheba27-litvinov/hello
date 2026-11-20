@@ -1,34 +1,46 @@
-from collections.abc import Callable
+from bisect import bisect_left, bisect_right
+from collections.abc import Callable, Sequence
 
 
-def merge_in_place[T](
-    items: list[T],
-    start: int,
-    len1: int,
-    size: int,
-    key: Callable[[T], T] | None = None,
-) -> None:
+def get_all_range(numbers: Sequence[int], allowed: range | None = None) -> list[int]:
     """
-    merges two sorted by key subparts in place of a list's part
-    Time complexity O[len1 * (size - len1)]
-    Space complexity O[1] no additional list is created
-    items - list of T objects (T any type generic at call time)
-    start - start index of a being merged list
-    len1 - length of the first subpart
-    size - length of whole part
-    Example: items - [3, 5, 7, -11, 0, 4, -10, -20, 100, -80,-4, 8 ], key - abs function
-    start - 0; len1 - 4; size - 8
-    call as  merge_in_place(items, start=0, len1=4, size=8, key=abs)
-    updated itesms should be as [0, 3, 4, 5, 7, -10, -11, -20, 100, -80,-4, 8]
+    numbers - sorted list of numbers in ascending order
+    allowed - range of numbers (may be empty)
+    returns list of numbers that greater or equal minimal value of range and less than maximal value
+    for empty range the function returns the empty list
+    for missed second argument the function returns the same "numbers"
     """
-    if key is None:
-        key = lambda item: item
+    result: list[int] = []
 
-    for i in range(start + len1, start + size):
-        right = i
-        left = i - 1
+    if allowed is None:
+        result = list(numbers)
+    elif len(allowed):
+        start = bisect_left(numbers, min(allowed[0], allowed[-1]))
+        end = bisect_right(numbers, max(allowed[0], allowed[-1]))
+        result = list(numbers[start:end])
+    return result
 
-        while left >= start and key(items[left]) > key(items[right]):  # type: ignore
-            items[left], items[right] = items[right], items[left]
-            left -= 1
-            right -= 1
+
+def get_all_not_in_range(
+    numbers: Sequence[int], disallowed: range | None = None
+) -> list[int]:
+    """
+    numbers - sorted list of numbers in ascending order
+    disallowed - range of numbers (may be empty)
+     returns list of numbers from "numbers" that are not in a given range
+    """
+
+
+def my_sorted[T, K](
+    items: Sequence[T], /, *, key: Callable[[T], T | K] | None = None
+) -> list[T]:
+    """
+    returns sorted by key list
+    implementation according the following algorithm:
+    "items" is divided on the parts, each of which contains sqrt(len(items)) items
+    Each part should be sorted separately by bubble sorting algorithm that you have already implemented
+    After that all parts should be merged.
+    No limitations for extra space
+    Note: To use "sqrt" function from the module "math". This function returns float type
+        so you should apply function "int" and the last part may contain more items
+    """
