@@ -1,7 +1,10 @@
-from functions import get_all_not_in_range, get_all_range
+from collections.abc import Callable
+
+from functions import get_all_not_in_range, get_all_range, my_sorted
 from unittest_print import print_results, print_test
 
-numbers = [1, 3, 5, 7, 9, 11]
+sorted_numbers = [1, 3, 5, 7, 9, 11]
+unsorted_numbers = [3, -2, -1, 0, 1, 2, -3]
 
 get_all_range_tests: list[tuple[range | None, list[int]]] = [
     (range(3, 7), [3, 5]),
@@ -32,18 +35,34 @@ get_all_not_in_range_tests: list[tuple[range, list[int]]] = [
     (range(7, 3, -1), [1, 3, 9, 11]),
 ]
 
+
+my_sorted_tests: list[tuple[Callable[[int], int] | None, list[int]]] = [
+    (None, [-3, -2, -1, 0, 1, 2, 3]),
+    (abs, [0, -1, 1, -2, 2, 3, -3]),
+    (lambda num: num, [-3, -2, -1, 0, 1, 2, 3]),
+    (lambda num: -num, [3, 2, 1, 0, -1, -2, -3]),
+]
+
 for allowed, expected in get_all_range_tests:
     print_test(
-        f"get_all_range: {allowed} from {numbers}",
+        f"get_all_range: {allowed} from {sorted_numbers}",
         expected,
-        get_all_range(numbers, allowed),
+        get_all_range(sorted_numbers, allowed),
     )
 
 for disallowed, expected in get_all_not_in_range_tests:
     print_test(
-        f"get_all_not_in_range: {disallowed} from {numbers}",
+        f"get_all_not_in_range: {disallowed} from {sorted_numbers}",
         expected,
-        get_all_not_in_range(numbers, disallowed),
+        get_all_not_in_range(sorted_numbers, disallowed),
+    )
+
+
+for key, expected in my_sorted_tests:
+    print_test(
+        f"my_sorted: {key} from {unsorted_numbers}",
+        expected,
+        my_sorted(unsorted_numbers, key=key),
     )
 
 print_results()
