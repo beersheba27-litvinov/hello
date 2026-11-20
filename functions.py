@@ -21,14 +21,19 @@ def get_all_range(numbers: Sequence[int], allowed: range | None = None) -> list[
     return result
 
 
-def get_all_not_in_range(
-    numbers: Sequence[int], disallowed: range | None = None
-) -> list[int]:
+def get_all_not_in_range(numbers: Sequence[int], disallowed: range) -> list[int]:
     """
     numbers - sorted list of numbers in ascending order
     disallowed - range of numbers (may be empty)
      returns list of numbers from "numbers" that are not in a given range
     """
+
+    result = list(numbers)
+    if len(disallowed):
+        start = bisect_left(numbers, min(disallowed[0], disallowed[-1]))
+        end = bisect_right(numbers, max(disallowed[0], disallowed[-1]))
+        del result[start:end]
+    return result
 
 
 def my_sorted[T, K](
