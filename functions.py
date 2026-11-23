@@ -1,4 +1,4 @@
-from bisect import bisect_left, bisect_right
+from bisect import bisect_left
 from collections.abc import Callable, Sequence
 from math import sqrt
 
@@ -17,8 +17,8 @@ def get_all_range(numbers: Sequence[int], allowed: range | None = None) -> list[
         result = list(numbers)
     elif len(allowed):
         start = bisect_left(numbers, min(allowed[0], allowed[-1]))
-        end = bisect_right(numbers, max(allowed[0], allowed[-1]))
-        result = list(numbers[start:end])
+        end = bisect_left(numbers, max(allowed[0], allowed[-1]))
+        result = [numbers[i] for i in range(start, end)]
     return result
 
 
@@ -29,12 +29,7 @@ def get_all_not_in_range(numbers: Sequence[int], disallowed: range) -> list[int]
      returns list of numbers from "numbers" that are not in a given range
     """
 
-    result = list(numbers)
-    if len(disallowed):
-        start = bisect_left(numbers, min(disallowed[0], disallowed[-1]))
-        end = bisect_right(numbers, max(disallowed[0], disallowed[-1]))
-        del result[start:end]
-    return result
+    return [num for num in numbers if num not in disallowed]
 
 
 def _move_max_to_end[T, K](items: list[T], size: int, key: Callable[[T], T | K]) -> int:
@@ -46,32 +41,25 @@ def _move_max_to_end[T, K](items: list[T], size: int, key: Callable[[T], T | K])
     return n_swaps
 
 
-def _bubble_sorted[T, K](
-    items: Sequence[T], key: Callable[[T], T | K] | None = None
-) -> list[T]:
-    result = list(items)
-    if key is None:
-        key = lambda obj: obj
-    size = len(result)
+def _bubble_sort[T, K](items: list[T], key: Callable[[T], T | K]) -> None:
+    size = len(items)
     unsorted = True
     while unsorted:
         size -= 1
-        unsorted = _move_max_to_end(result, size, key) > 0
-    return result
+        unsorted = _move_max_to_end(items, size, key) > 0
 
 
 def _merge[T, K](
     part1: Sequence[T],
     part2: Sequence[T],
-    key: Callable[[T], T | K] | None = None,
+    key: Callable[[T], T | K],
 ) -> list[T]:
     result: list[T] = []
     len1 = len(part1)
     len2 = len(part2)
     index1 = 0
     index2 = 0
-    if key is None:
-        key = lambda obj: obj
+
     while index1 < len1 and index2 < len2:
         if key(part1[index1]) > key(part2[index2]):  # pyright: ignore[reportOperatorIssue]
             result.append(part2[index2])
@@ -99,14 +87,17 @@ def my_sorted[T, K](
     """
     result: list[T] = []
     len_items = len(items)
-    sqrt_items = int(sqrt(len(items)))
+    sqrt_items = int(sqrt(len_items))
     start = 0
+    key = key if key is not None else lambda obj: obj
 
     # The last part may contain not more, but less elements (unlike the docstring).
     # If it matters, could you explain in the lecture -- why?
     while start < len_items:
-        sublist = items[start : start + sqrt_items]
-        result = _merge(result, _bubble_sorted(sublist, key), key)
+        stop = min(start + sqrt_items, len_items)
+        sublist = [items[i] for i in range(start, stop)]
+        _bubble_sort(sublist, key)
+        result = _merge(result, sublist, key)
         start += sqrt_items
 
     return result
